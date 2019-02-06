@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title></title>
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        #container {
+            padding: 10px;
+            width: 460px;
+            height: 80%;
+            background-color: #00FF00;
+        }
+        
+        #track {
+            width: 440px;
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+            margin: 20px auto;
+        }
+        
+        #train {
+            height: 92px;
+            width: 100px;
+            position: relative;
+            left: 0px;
+        }
+        
+        #stopButton {
+            padding-top: 15px;
+            margin: 10px auto;
+            background-color: white;
+            width: 100px;
+            height: 50px;
+            color: red;
+            text-align: center;
+            font-size: 24px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <p>
+            <ul>
+                <li>Click the train to make it go faster.</li>
+                <li>Click the Stop button to stop it.</li>
+                <li>Try to stop it as close to the edge as possible, without crashing.</li>
+            </ul>
+        </p>
+        <div id="track">
+            <div id="train">
+                <img src="http://www.watzthis.com/images/train.png">
+            </div>
+
+        </div>
+        <div id="stopButton">Stop!</div>
+    </div>
+    <script>
+        var trainSpeed = 250;
+        var trainPosition = 0;
+        var animation;
+
+        var train = document.getElementById("train");
+        train.addEventListener("click", speedUp);
+
+        var stopButton = document.getElementById("stopButton");
+        stopButton.addEventListener("click", stopTrain);
+
+        function speedUp() {
+            if (trainSpeed > 10) {
+                trainSpeed -= 10;
+            }
+            console.log("train speed: " + trainSpeed);
+
+            clearInterval(animation);
+            animation = setInterval(frame, trainSpeed);
+
+
+            function frame() {
+                trainPosition += 2;
+                train.style.left = trainPosition + 'px';
+                console.log(trainPosition);
+                checkPosition(trainPosition);
+            }
+        }
+
+        function checkPosition(currentPosition) {
+            if (currentPosition === 360) {
+                alert("Crash!");
+                console.log("Crash!");
+                clearInterval(animation);
+
+            }
+        }
+
+
+        function stopTrain() {
+            if (trainPosition < 360) {
+                clearInterval(animation);
+                console.log("Whew! That was close!");
+            }
+        }
+    </script>
+</body>
+
+</html>

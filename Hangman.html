@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hangman!</title>
+</head>
+Creating a Hangman Game 119
+
+<body>
+    <h1>Hangman!</h1>
+    <script>
+        // Create an array of words
+
+        // Pick a random word
+        var word = pickWord();
+        // Set up the answer array
+        var answerArray = setUpAnswerArray(word);
+        var noOfGuesses = 0;
+        var remainingLetters = word.length;
+        // The game loop
+
+        while (remainingLetters > 0 && noOfGuesses < 10) {
+            // Show the player their progress
+            showPlayerProgress(answerArray);
+            // Get a guess from the player
+            var guess = getGuess();
+
+            noOfGuesses++;
+            if (guess === null) {
+                // Exit the game loop
+                break;
+            } else if (guess.length !== 1) {
+                alert("Please enter a single letter.");
+            } else {
+                // Update the game state with the guess
+                var lettersChanged = updateGameState(guess, word, answerArray);
+                remainingLetters = remainingLetters - lettersChanged;
+                alert("You have just changed " + lettersChanged + " letter/letters and have " + remainingLetters + " left");
+            }
+            // The end of the game loop
+        }
+        // Check if number of guesses exceeded
+        if (remainingLetters > 0 && noOfGuesses == 10) {
+            alert("Number of guesses exceeded! The answer was " + word);
+        } else {
+            // Show the answer and congratulate the player
+            showAnswerAndCongratulatePlayer(answerArray);
+        }
+
+
+        function pickWord() {
+            var words = [
+                "javascript",
+                "monkey",
+                "amazing",
+                "pancake",
+                "pie",
+                "beautiful",
+
+            ];
+            return words[Math.floor(Math.random() * words.length)];
+        }
+
+        function setUpAnswerArray(word) {
+            var a = [];
+            for (var i = 0; i < word.length; i++) {
+                a[i] = "_";
+            }
+            return a;
+        }
+
+        function showPlayerProgress(answerArray) {
+            alert(answerArray.join(" "));
+        }
+
+        function getGuess() {
+            return prompt("Guess a letter or click cancel to stop!").toLowerCase();
+        }
+
+        function updateGameState(guess, word, answerArray) {
+            var numberOfLettersChanged = 0;
+            for (var j = 0; j < word.length; j++) {
+                if (word[j] === guess) {
+                    if (answerArray[j] == "_") {
+                        answerArray[j] = guess;
+                        numberOfLettersChanged++;
+                    } else {
+                        alert("You have already guessed this letter");
+                        return numberOfLettersChanged;
+                    }
+                }
+            }
+            return numberOfLettersChanged;
+        }
+
+        function showAnswerAndCongratulatePlayer(answerArray) {
+            alert(answerArray.join(" "));
+            alert("Good job! The answer was " + word);
+        }
+    </script>
+</body>
+
+</html>
